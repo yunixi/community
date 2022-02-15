@@ -10,7 +10,10 @@ import java.util.List;
 public class CommunityService {
 
 
-    public List<CommunityVO> getQnaSearchList() {
+    public List<CommunityVO> getQnaSearchList(CommunityVO communityVO) {
+        //해야하는 것
+        //일반 키워드 검색부터 진행!
+
         return new ArrayList<>();
     }
 }

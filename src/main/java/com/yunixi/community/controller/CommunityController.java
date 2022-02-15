@@ -17,7 +17,7 @@ public class CommunityController {
 
     @RequestMapping("/qna_list")
     public ResponseEntity<List> getQnaSearchList(@ModelAttribute CommunityVO communityVO) {
-        List<CommunityVO> resultList = communityService.getQnaSearchList();
+        List<CommunityVO> resultList = communityService.getQnaSearchList(communityVO);
         try {
             return ResponseEntity.ok(resultList);
         } catch (Exception e) {
