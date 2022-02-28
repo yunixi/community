@@ -1,8 +1,10 @@
 package com.yunixi.community.dao;
 
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
 
@@ -13,18 +15,25 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class ESDao {
 
-    public List esSearchRequest()
+    private final RestHighLevelClient restHighLevelClient;
+
+    public ESDao(RestHighLevelClient restHighLevelClient) {
+        this.restHighLevelClient = restHighLevelClient;
+    }
+
+    public List esSearchRequest(SearchSourceBuilder sourceBuilder)
     {
         SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
-        searchRequest.source(searchSourceBuilder);
-
-        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        sourceBuilder.query(QueryBuilders.termQuery("user", "kimchy"));
-        sourceBuilder.from(0);
-        sourceBuilder.size(5);
         sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+        searchRequest.source(sourceBuilder);
+
+        try {
+            SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         return new ArrayList();
     }
 }
